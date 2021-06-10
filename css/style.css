@@ -1,0 +1,43 @@
+body {
+    margin: unset;
+    background-color: #171717;
+    color: white;
+}
+
+.base {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    background-image: url(gfx/artifactboard.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: auto;
+}
+
+.barcont {
+    position: relative;
+    display: flex;
+    height: inherit;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bar {
+    width: 100%;
+    height: 10vmin;
+    background-color: aqua;
+}
+
+@media (min-aspect-ratio: 16/9) {
+    .base {
+        width: 172.8vh;
+        height: 97.2vh;
+    }
+}
+
+@media (max-aspect-ratio: 16/9) {
+    .base {
+        width: 96vw;
+        height: 54vw;
+    }
+}
