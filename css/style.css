@@ -1,13 +1,107 @@
+@font-face {
+    font-family: 'Radiance Condensed';
+    src: url('fonts/Radiance-RegularCondensed.eot');
+    src: url('fonts/Radiance-RegularCondensed.eot?#iefix') format('embedded-opentype'), url('fonts/Radiance-RegularCondensed.woff2') format('woff2'), url('fonts/Radiance-RegularCondensed.woff') format('woff'), url('fonts/Radiance-RegularCondensed.ttf') format('truetype'), url('fonts/Radiance-RegularCondensed.svg#Radiance-RegularCondensed') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Radiance';
+    src: url('fonts/Radiance-Black.eot');
+    src: url('fonts/Radiance-Black.eot?#iefix') format('embedded-opentype'), url('fonts/Radiance-Black.woff2') format('woff2'), url('fonts/Radiance-Black.woff') format('woff'), url('fonts/Radiance-Black.ttf') format('truetype'), url('fonts/Radiance-Black.svg#Radiance-Black') format('svg');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Radiance';
+    src: url('fonts/Radiance-Bold.eot');
+    src: url('fonts/Radiance-Bold.eot?#iefix') format('embedded-opentype'), url('fonts/Radiance-Bold.woff2') format('woff2'), url('fonts/Radiance-Bold.woff') format('woff'), url('fonts/Radiance-Bold.ttf') format('truetype'), url('fonts/Radiance-Bold.svg#Radiance-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Radiance';
+    src: url('fonts/Radiance-Light.eot');
+    src: url('fonts/Radiance-Light.eot?#iefix') format('embedded-opentype'), url('fonts/Radiance-Light.woff2') format('woff2'), url('fonts/Radiance-Light.woff') format('woff'), url('fonts/Radiance-Light.ttf') format('truetype'), url('fonts/Radiance-Light.svg#Radiance-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Radiance';
+    src: url('fonts/Radiance-Regular.eot');
+    src: url('fonts/Radiance-Regular.eot?#iefix') format('embedded-opentype'), url('fonts/Radiance-Regular.woff2') format('woff2'), url('fonts/Radiance-Regular.woff') format('woff'), url('fonts/Radiance-Regular.ttf') format('truetype'), url('fonts/Radiance-Regular.svg#Radiance-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Radiance';
+    src: url('fonts/Radiance-UltraLight.eot');
+    src: url('fonts/Radiance-UltraLight.eot?#iefix') format('embedded-opentype'), url('fonts/Radiance-UltraLight.woff2') format('woff2'), url('fonts/Radiance-UltraLight.woff') format('woff'), url('fonts/Radiance-UltraLight.ttf') format('truetype'), url('fonts/Radiance-UltraLight.svg#Radiance-UltraLight') format('svg');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Radiance';
+    src: url('fonts/Radiance-Semibold.eot');
+    src: url('fonts/Radiance-Semibold.eot?#iefix') format('embedded-opentype'), url('fonts/Radiance-Semibold.woff2') format('woff2'), url('fonts/Radiance-Semibold.woff') format('woff'), url('fonts/Radiance-Semibold.ttf') format('truetype'), url('fonts/Radiance-Semibold.svg#Radiance-Semibold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Artifact Numbers';
+    src: url('fonts/ArtifactNumbersBold.eot');
+    src: url('fonts/ArtifactNumbersBold.eot?#iefix') format('embedded-opentype'), url('fonts/ArtifactNumbersBold.woff2') format('woff2'), url('fonts/ArtifactNumbersBold.woff') format('woff'), url('fonts/ArtifactNumbersBold.ttf') format('truetype'), url('fonts/ArtifactNumbersBold.svg#ArtifactNumbersBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /*Colors */
+    --black: #171717;
+    --white: #e8e8e8;
+    --gold: #AD862B;
+    --dwhite: #B2ABA3;
+    /* Card Colors */
+    --cardblue: -webkit-linear-gradient(90deg, #0d3855, #205579);
+    --cardred: -webkit-linear-gradient(90deg, #541a27, #84293C);
+    --cardgreen: -webkit-linear-gradient(90deg, #38542b, #527b3f);
+    --cardblack: -webkit-linear-gradient(90deg, #2c2733, #332d3b);
+    --cardgold: -webkit-linear-gradient(90deg, #907024, #AD862B);
+    /*Item Cards*/
+    --creepgray: -webkit-linear-gradient(90deg, #4d5453, #67716f);
+    /* Also Colorless */
+    --creepblue: -webkit-linear-gradient(90deg, #434d54, #5a6770);
+    --creepred: -webkit-linear-gradient(90deg, #544347, #705a5f);
+    --creepgreen: -webkit-linear-gradient(90deg, #495443, #61705a);
+    --creepblack: -webkit-linear-gradient(90deg, #4b4354, #635a70);
+}
+
 body {
     margin: unset;
-    background-color: #171717;
-    color: white;
+    background-color: var(--black);
+    color: var(--white);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Radiance';
 }
 
 .base {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
     background-image: url(gfx/artifactboard.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -16,26 +110,116 @@ body {
 
 .barcont {
     position: relative;
-    display: flex;
     height: inherit;
+    display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 .bar {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .player0 {
-    height: calc((100%/9)*2);
-}
-
-.board {
-    height: calc((100%/9)*4);
+    height: calc((100%/9)*2.1);
 }
 
 .player1 {
-    height: calc((100%/9)*3);
+    height: calc((100%/9)*2.8);
+}
+
+.bararea {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.player0 .bararea {
+    flex: 1;
+}
+
+.player1 .bararea:nth-child(1) {
+    flex: 2;
+}
+
+.player1 .bararea:nth-child(2) {
+    flex: 3;
+}
+
+.bararea .barrow:nth-child(1),
+.bararea .barrow:nth-child(3) {
+    flex: 1;
+}
+
+.bararea .barrow:nth-child(2) {
+    flex: 3.9;
+}
+
+.towers {
+    padding: 1vmin 2vmin 1vmin;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tower {
+    width: 8%;
+    border-radius: 2vmin;
+    border: 1vmin solid var(--dwhite);
+    background-color: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: 'Artifact Numbers';
+    text-align: center;
+    font-size: 5vmin;
+}
+
+.board {
+    height: calc((100%/9)*4.1);
+    display: flex;
+    flex-direction: row;
+}
+
+.combat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.combat.c2 {
+    border-left: solid var(--gold);
+    border-right: solid var(--gold);
+    border-width: .8vmin;
+}
+
+.direction {
+    flex: .2;
+}
+
+.side {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 1.5vmin;
+    padding: 2vmin;
+}
+
+.combat .side:nth-child(1) {
+    padding-top: 10%;
+}
+
+.combat .side:nth-child(2) {
+    padding-bottom: 10%;
+}
+
+.bcard {
+    flex: 1;
+    background: var(--cardblue);
+    box-shadow: -.3vmin -.4vmin .5vmin var(--black);
+    border-radius: .25vmin;
 }
 
 @media (min-aspect-ratio: 16/9) {
@@ -49,5 +233,14 @@ body {
     .base {
         width: 96vw;
         height: 54vw;
+    }
+}
+
+@supports (-webkit-touch-callout: none) {
+    @media (min-aspect-ratio: 16/9) {
+        .base {
+            width: 144vh;
+            height: 81vh;
+        }
     }
 }
