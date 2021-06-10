@@ -24,8 +24,18 @@ body {
 
 .bar {
     width: 100%;
-    height: 10vmin;
-    background-color: aqua;
+}
+
+.player0 {
+    height: calc((100%/9)*2);
+}
+
+.board {
+    height: calc((100%/9)*4);
+}
+
+.player1 {
+    height: calc((100%/9)*3);
 }
 
 @media (min-aspect-ratio: 16/9) {
