@@ -227,13 +227,17 @@ body {
     padding-bottom: 10%;
 }
 
-.bcard {
-    flex: 1;
-    background: var(--cardblue);
-    box-shadow: -.3vmin -.4vmin .5vmin var(--black);
+.bcard,
+.hcard {
     border-radius: .25vmin;
     display: flex;
     flex-direction: column;
+    flex: 1;
+}
+
+.bcard {
+    box-shadow: -.3vmin -.4vmin .5vmin var(--black);
+    background: var(--cardblue);
 }
 
 .bcardtop {
@@ -245,6 +249,7 @@ body {
     background-image: url(card_art/full_art/10006.png);
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: 50%;
     padding: 1vmin .5vmin 1vmin;
     display: flex;
     flex-direction: column;
@@ -286,6 +291,7 @@ body {
     flex: 1;
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: 50%;
     margin: -.6vmin;
     font-family: 'Artifact Numbers';
     font-size: 1.5vmin;
@@ -306,6 +312,25 @@ body {
 
 .bcardhe {
     background-image: url(gfx/cardstat_health.png);
+}
+
+.player1 .hcards {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 5%;
+}
+
+.hcard {
+    margin: 0 -1% -10%;
+    width: 10%;
+    background: var(--cardblue);
+    box-shadow: -.2vmin -.3vmin .5vmin var(--black);
+}
+
+.player1 .hcard:hover,
+.player1 .hcard:active {
+    transform: translateY(-50%);
 }
 
 @media (min-aspect-ratio: 16/9) {
