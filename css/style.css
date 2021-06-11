@@ -110,6 +110,7 @@ body {
     height: 100vh;
     overflow: hidden;
     font-family: 'Radiance';
+    cursor: url("gfx/cursor.png"), auto;
 }
 
 .base {
@@ -231,6 +232,80 @@ body {
     background: var(--cardblue);
     box-shadow: -.3vmin -.4vmin .5vmin var(--black);
     border-radius: .25vmin;
+    display: flex;
+    flex-direction: column;
+}
+
+.bcardtop {
+    flex: 1;
+}
+
+.bcardart {
+    flex: 9;
+    background-image: url(/css/card_art/full_art/10006.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 1vmin .5vmin 1vmin;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vmin;
+}
+
+.bcardef {
+    flex: 1;
+}
+
+.bcardmid {
+    flex: 1;
+}
+
+.abilities {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: .25vmin;
+}
+
+.ability {
+    flex: 1;
+    border: .2vmin solid gray;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bcardbot {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1vmin;
+}
+
+.var {
+    flex: 1;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: -.6vmin;
+    font-family: 'Artifact Numbers';
+    font-size: 1.5vmin;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding-left: .2vmin;
+}
+
+.bcardat {
+    background-image: url(/css/gfx/cardstat_attack.png);
+}
+
+.bcardar {
+    background-image: url(/css/gfx/cardstat_armor.png);
+}
+
+.bcardhe {
+    background-image: url(/css/gfx/cardstat_health.png);
 }
 
 @media (min-aspect-ratio: 16/9) {
