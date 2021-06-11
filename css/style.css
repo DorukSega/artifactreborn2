@@ -242,7 +242,7 @@ body {
 
 .bcardart {
     flex: 9;
-    background-image: url(/css/card_art/full_art/10006.png);
+    background-image: url(card_art/full_art/10006.png);
     background-size: cover;
     background-repeat: no-repeat;
     padding: 1vmin .5vmin 1vmin;
@@ -297,15 +297,15 @@ body {
 }
 
 .bcardat {
-    background-image: url(/css/gfx/cardstat_attack.png);
+    background-image: url(gfx/cardstat_attack.png);
 }
 
 .bcardar {
-    background-image: url(/css/gfx/cardstat_armor.png);
+    background-image: url(gfx/cardstat_armor.png);
 }
 
 .bcardhe {
-    background-image: url(/css/gfx/cardstat_health.png);
+    background-image: url(gfx/cardstat_health.png);
 }
 
 @media (min-aspect-ratio: 16/9) {
