@@ -118,6 +118,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     margin: auto;
+    overflow: hidden;
 }
 
 .barcont {
@@ -181,6 +182,7 @@ body {
     border-radius: 1.5vmin;
     border: .8vmin solid var(--dwhite);
     background-color: var(--black);
+    box-shadow: -.6vmin -1.2vmin 1.5vmin var(--black);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -274,6 +276,10 @@ body {
 
 .ability {
     flex: 1;
+    background-image: url(card_art/mini_icons/10489.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
     border: .2vmin solid gray;
     background-size: cover;
     background-repeat: no-repeat;
