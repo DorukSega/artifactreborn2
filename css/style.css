@@ -245,19 +245,20 @@ body {
     border-radius: .4vmin;
     display: flex;
     flex-direction: column;
-    flex: 1;
     background: var(--cardblue);
 }
 
 .bcard {
     box-shadow: -.3vmin -.4vmin .5vmin var(--black);
+    flex: 1;
 }
 
 .cardtop {
     flex: 1;
     display: flex;
     flex-direction: row;
-    gap: .4vmin;
+    gap: .3vmin;
+    white-space: nowrap;
 }
 
 .miniicon {
@@ -290,9 +291,10 @@ body {
 }
 
 .cname {
-    flex: 5.5;
+    flex: 5;
     font-family: Radiance Condensed;
     font-size: 1.3vmin;
+    padding: .2vmin;
 }
 
 .cardart {
@@ -398,15 +400,19 @@ body {
 }
 
 .player0 .hcard {
+    margin-top: -5%;
+}
+
+.player0 .hcard {
     margin: 0;
 }
 
 .hcard {
     margin: 0 -1% -12%;
-    width: 10%;
     box-shadow: -.2vmin -.3vmin .5vmin var(--black);
     transition: .05s;
     z-index: 0;
+    width: 10.5%;
 }
 
 .player1 .hcard:hover,
