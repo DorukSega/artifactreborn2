@@ -73,7 +73,7 @@
 :root {
     /*Colors */
     --black: #171717;
-    --white: #e8e8e8;
+    --white: #e5e5e5;
     --gold: #AD862B;
     --dwhite: #B2ABA3;
     /* Card Colors */
@@ -114,7 +114,7 @@ body {
 }
 
 .base {
-    background-image: url(gfx/artifactboard.png);
+    background-image: url(gfx/artifactboard.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     margin: auto;
@@ -141,7 +141,7 @@ body {
 }
 
 .player1 {
-    height: calc((100%/9)*2.8);
+    height: calc((100%/9)*2.4);
 }
 
 .bararea {
@@ -155,7 +155,7 @@ body {
 }
 
 .player1 .bararea:nth-child(1) {
-    flex: 1.8;
+    flex: 2.4;
 }
 
 .player1 .bararea:nth-child(2) {
@@ -172,17 +172,17 @@ body {
 }
 
 .towers {
-    padding: 1vmin 2vmin 1vmin;
+    padding: 1vmin 5vmin 1vmin;
     display: flex;
     justify-content: space-between;
 }
 
 .tower {
     width: 8%;
-    border-radius: 1.5vmin;
+    border-radius: 12% / 50%;
     border: .8vmin solid var(--dwhite);
     background-color: var(--black);
-    box-shadow: -.6vmin -1.2vmin 1.5vmin var(--black);
+    box-shadow: -.6vmin -1.2vmin .7vmin var(--black);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -192,7 +192,7 @@ body {
 }
 
 .board {
-    height: calc((100%/9)*4.1);
+    height: calc((100%/9)*4.5);
     display: flex;
     flex-direction: row;
 }
@@ -201,6 +201,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    padding: 0 1vmin 0;
 }
 
 .combat.c2 {
@@ -216,37 +217,85 @@ body {
 .side {
     flex: 1;
     display: flex;
+    padding: 1.2vmin 1vmin 1.2vmin;
+    gap: 1vmin;
+}
+
+.side.p0 {
+    flex-direction: column;
+}
+
+.side.p1 {
+    flex-direction: column-reverse;
+}
+
+.timps {
+    flex: 1;
+}
+
+.bcards {
+    display: flex;
     flex-direction: row;
     gap: 1.5vmin;
-    padding: 2vmin;
-}
-
-.combat .side:nth-child(1) {
-    padding-top: 10%;
-}
-
-.combat .side:nth-child(2) {
-    padding-bottom: 10%;
+    flex: 2.5;
 }
 
 .bcard,
 .hcard {
-    border-radius: .25vmin;
+    border-radius: .4vmin;
     display: flex;
     flex-direction: column;
     flex: 1;
+    background: var(--cardblue);
 }
 
 .bcard {
     box-shadow: -.3vmin -.4vmin .5vmin var(--black);
-    background: var(--cardblue);
 }
 
-.bcardtop {
+.cardtop {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: .4vmin;
+}
+
+.miniicon {
+    background-image: url(card_art/hero_icons/10006.png);
+    border-radius: 50%;
+    background-color: var(--black);
+    margin-left: .2vmin;
+}
+
+.manaicon {
+    background-image: url(gfx/mana_bg_small.png);
+    margin-top: -1vmin;
+    margin-bottom: -1vmin;
+    z-index: 0;
+    font-family: 'Artifact Numbers';
+    font-size: 1.9vmin;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    margin-left: .8vmin;
+}
+
+.miniicon,
+.manaicon {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50%;
     flex: 1;
 }
 
-.bcardart {
+.cname {
+    flex: 5.5;
+    font-family: Radiance Condensed;
+    font-size: 1.3vmin;
+}
+
+.cardart {
     flex: 9;
     background-image: url(card_art/full_art/10006.png);
     background-size: cover;
@@ -255,19 +304,19 @@ body {
     padding: 1vmin .5vmin 1vmin;
     display: flex;
     flex-direction: column;
-    gap: 1.5vmin;
+    gap: .2vmin;
 }
 
-.bcardef {
+.cardef {
     flex: 1;
 }
 
-.bcardmid {
-    flex: 1;
+.cardmid {
+    flex: 2;
 }
 
 .abilities {
-    flex: 1;
+    flex: .98;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -285,12 +334,20 @@ body {
     background-repeat: no-repeat;
 }
 
-.bcardbot {
+.cardbot {
     flex: 2;
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 1vmin;
+}
+
+.cardbot.spell {
+    flex: 8;
+    background-image: url(gfx/cardspell_opaque.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-bottom: 1vmin;
 }
 
 .var {
@@ -300,12 +357,22 @@ body {
     background-position: 50%;
     margin: -.6vmin;
     font-family: 'Artifact Numbers';
-    font-size: 1.5vmin;
+    font-size: 1.8vmin;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
     padding-left: .2vmin;
+}
+
+.hcard .cardbot {
+    gap: 0;
+}
+
+.hcard .var {
+    margin: 0;
+    margin-top: -1vmin;
+    margin-bottom: .2vmin;
 }
 
 .bcardat {
@@ -320,23 +387,32 @@ body {
     background-image: url(gfx/cardstat_health.png);
 }
 
-.player1 .hcards {
+.hcards {
     display: flex;
     justify-content: center;
     flex-direction: row;
+}
+
+.player1 .hcards {
     margin-top: 5%;
 }
 
+.player0 .hcard {
+    margin: 0;
+}
+
 .hcard {
-    margin: 0 -1% -10%;
+    margin: 0 -1% -12%;
     width: 10%;
-    background: var(--cardblue);
     box-shadow: -.2vmin -.3vmin .5vmin var(--black);
+    transition: .05s;
+    z-index: 0;
 }
 
 .player1 .hcard:hover,
 .player1 .hcard:active {
-    transform: translateY(-50%);
+    transform: translateY(-70%);
+    z-index: 1;
 }
 
 @media (min-aspect-ratio: 16/9) {
