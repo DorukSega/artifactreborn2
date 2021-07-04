@@ -113,10 +113,22 @@ body {
     cursor: url("gfx/cursor.png"), auto;
 }
 
+.base,
+.miniicon,
+.manaicon,
+.cardart,
+.ability,
+.var,
+.cardbot.spell,
+.player0 .hcard,
+.heroicon {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
 .base {
     background-image: url(gfx/artifactboard.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
     margin: auto;
     overflow: hidden;
 }
@@ -261,33 +273,28 @@ body {
     white-space: nowrap;
 }
 
-.miniicon {
-    background-image: url(card_art/hero_icons/10006.png);
-    border-radius: 50%;
-    background-color: var(--black);
-    margin-left: .2vmin;
-}
-
 .manaicon {
     background-image: url(gfx/mana_bg_small.png);
-    margin-top: -1vmin;
-    margin-bottom: -1vmin;
+    margin-top: -.4vmin;
+    margin-bottom: -.4vmin;
     z-index: 0;
     font-family: 'Artifact Numbers';
-    font-size: 1.9vmin;
+    font-size: 2.2vmin;
+    margin-left: .6vmin;
+}
+
+.heroicon {
+    background-image: url(card_art/hero_icons/10006.png);
+    margin: 3%;
+}
+
+.manaicon,
+.heroicon {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    margin-left: .8vmin;
-}
-
-.miniicon,
-.manaicon {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: 50%;
-    flex: 1;
 }
 
 .cname {
@@ -300,9 +307,6 @@ body {
 .cardart {
     flex: 9;
     background-image: url(card_art/full_art/10006.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50%;
     padding: 1vmin .5vmin 1vmin;
     display: flex;
     flex-direction: column;
@@ -328,12 +332,7 @@ body {
 .ability {
     flex: 1;
     background-image: url(card_art/mini_icons/10489.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50%;
     border: .2vmin solid gray;
-    background-size: cover;
-    background-repeat: no-repeat;
 }
 
 .cardbot {
@@ -347,16 +346,11 @@ body {
 .cardbot.spell {
     flex: 8;
     background-image: url(gfx/cardspell_opaque.png);
-    background-size: cover;
-    background-repeat: no-repeat;
     margin-bottom: 1vmin;
 }
 
 .var {
     flex: 1;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50%;
     margin: -.6vmin;
     font-family: 'Artifact Numbers';
     font-size: 1.8vmin;
@@ -377,15 +371,15 @@ body {
     margin-bottom: .2vmin;
 }
 
-.bcardat {
+.cardat {
     background-image: url(gfx/cardstat_attack.png);
 }
 
-.bcardar {
+.cardar {
     background-image: url(gfx/cardstat_armor.png);
 }
 
-.bcardhe {
+.cardhe {
     background-image: url(gfx/cardstat_health.png);
 }
 
@@ -400,11 +394,8 @@ body {
 }
 
 .player0 .hcard {
-    margin-top: -5%;
-}
-
-.player0 .hcard {
-    margin: 0;
+    margin: -7% -1% 0;
+    background-image: url(gfx/card_back.png);
 }
 
 .hcard {
@@ -412,7 +403,7 @@ body {
     box-shadow: -.2vmin -.3vmin .5vmin var(--black);
     transition: .05s;
     z-index: 0;
-    width: 10.5%;
+    width: 11%;
 }
 
 .player1 .hcard:hover,
@@ -438,8 +429,8 @@ body {
 @supports (-webkit-touch-callout: none) {
     @media (min-aspect-ratio: 16/9) {
         .base {
-            width: 144vh;
-            height: 81vh;
+            width: 152vh;
+            height: 90vh;
         }
     }
 }
