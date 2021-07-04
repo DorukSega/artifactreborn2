@@ -137,11 +137,11 @@ body {
 }
 
 .player0 {
-    height: calc((100%/9)*2.1);
+    height: calc((100%/9)*2.2);
 }
 
 .player1 {
-    height: calc((100%/9)*2.4);
+    height: calc((100%/9)*2.5);
 }
 
 .bararea {
@@ -192,7 +192,7 @@ body {
 }
 
 .board {
-    height: calc((100%/9)*4.5);
+    height: calc((100%/9)*4.3);
     display: flex;
     flex-direction: row;
 }
