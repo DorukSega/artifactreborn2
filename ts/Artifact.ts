@@ -2,24 +2,34 @@
 class Game {
     readonly LaneAmount: number; // default is 3
     readonly LaneSize: number; // 5
-    readonly DeckLimit: number; // 12
+    readonly HandLimit: number; // 12
+    readonly DeckHeroAmount: number; // 5
+    readonly DeckCastableAmount: number; // 40
+    readonly DeckItemAmount: number; // 10
     readonly TowerHealth: number; // 30
     players: Array<Player>;
     spectators: Array<Spectator> = new Array<Spectator>();
 
-    constructor(LaneAmount: number, LaneSize: number, DeckLimit: number, TowerHealth: number, PlayerCount: number) {
+    constructor(
+        LaneAmount: number, LaneSize: number, DeckLimit: number,
+        TowerHealth: number, PlayerCount: number, DeckHeroAmount: number,
+        DeckCastableAmount: number, DeckItemAmount: number
+    ) {
         this.LaneAmount = LaneAmount;
         this.LaneSize = LaneSize;
-        this.DeckLimit = DeckLimit;
+        this.HandLimit = DeckLimit;
         this.TowerHealth = TowerHealth;
+        this.DeckHeroAmount = DeckHeroAmount;
+        this.DeckCastableAmount = DeckCastableAmount;
+        this.DeckItemAmount = DeckItemAmount;
         this.players = new Array<Player>(PlayerCount);
     }
 
-    setPlayer(index: number, name: string): boolean {
+    setPlayer(index: number, name: string, deck: Deck): boolean {
         if (this.players[index])
             return false;
         else {
-            this.players[index] = new Player(name, index, this.LaneAmount, this.LaneSize, this.TowerHealth);
+            this.players[index] = new Player(name, index, this, deck);
             return true;
         }
     }
@@ -39,19 +49,19 @@ class User {
     }
 }
 
-class Spectator extends User {
-
-}
+class Spectator extends User { }
 
 class Player extends User {
-
+    readonly game: Game;
     lanes: Array<Lane>;
-
-    constructor(Name: string, Id: number, LaneAmount: number, LaneSize: number, TowerHealth: number) {
+    readonly deck: PlayDeck;
+    constructor(Name: string, Id: number, game: Game, deck: Deck) {
         super(Name, Id);
-        this.lanes = new Array<Lane>(LaneAmount);
-        for (let i = 0; i < LaneAmount; i++)
-            this.lanes[i] = new Lane(LaneSize, TowerHealth, this);
+        this.game = game;
+        this.lanes = new Array<Lane>(game.LaneAmount);
+        for (let i = 0; i < game.LaneAmount; i++)
+            this.lanes[i] = new Lane(this);
+        this.deck = new PlayDeck(game, deck).assign(this);
     }
 
     LaneAmount(): number {
@@ -59,18 +69,89 @@ class Player extends User {
     }
 }
 
+class Deck {
+    heroes: Array<Hero | null>;
+    cards: Array<Creep | Spell | TowerEnchantment | null>;
+    items: Array<Item | null>;
+    player?: Player;
+    readonly game: Game;
+    constructor(game: Game) {
+        this.game = game;
+        this.heroes = new Array<null>(game.DeckHeroAmount);
+        this.cards = new Array<null>(game.DeckCastableAmount);
+        this.items = new Array<null>(game.DeckItemAmount);
+    }
+
+    pushCard(card: Creep | Spell | TowerEnchantment, times: number = 1): boolean {
+        let indArr: Array<number> = [];
+
+        for (let i = 0; times; i++)
+            if (!this.cards[i]) {
+                indArr.push(i);
+                times--;
+            }
+
+        if (!times) { //times == 0
+            let i;
+            while ((i = indArr.pop()) != undefined) {
+                this.cards[i] = card;
+                if (this.player)
+                    card.player = this.player;
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+
+    pushHero(hero: Hero): boolean {
+        for (let i: number = 0; i < this.heroes.length; i++)
+            if (!this.heroes[i]) {
+                this.heroes[i] = hero;
+                if (this.player)
+                    hero.player = this.player;
+                this.pushCard(hero.signature, 3);
+                return true;
+            };
+
+        return false;
+    }
+
+    assign(player: Player): Deck {
+        this.player = player;
+        return this;
+    }
+}
+
+class PlayDeck extends Deck {
+    constructor(game: Game, deck: Deck) {
+        super(game);
+        this.heroes = deck.heroes.map(e => e); //clone of the array
+        this.cards = deck.cards.map(e => e);
+        this.items = deck.items.map(e => e);
+    }
+
+}
+
+class Hand {
+    readonly cards: Array<Card>;
+    constructor(DeckLimit: number) {
+        this.cards = new Array<Card>(DeckLimit);
+    }
+}
+
 class Lane {
-    readonly cards: Array<Deployable | Empty>;
+    readonly cards: Array<Deployable | null>;
     tower: Tower;
     player: Player;
-    constructor(LaneSize: number, TowerHealth: number, player: Player) {
-        this.cards = new Array<Empty>(LaneSize);
-        this.tower = new Tower(TowerHealth);
+    constructor(player: Player) {
         this.player = player;
+        this.cards = new Array<null>(player.game.LaneSize);
+        this.tower = new Tower(player.game.TowerHealth);
     }
 
     deployCard(card: Deployable, at: number): boolean {
-        if (this.cards[at] instanceof Deployable)
+        if (this.cards[at])
             return false;
         else {
             this.cards[at] = card;
@@ -86,7 +167,7 @@ class Lane {
         let card = this.cards[at];
         if (card instanceof Deployable) {
             card.isDeployed = false;
-            this.cards[at] = Empty;
+            this.cards[at] = null;
             return true;
         }
         else
@@ -114,6 +195,7 @@ class Color {
 abstract class Card {
     name: string;
     color: Color;
+    player?: Player;
     constructor(Name: string, color: string) {
         this.name = Name;
         this.color = new Color(color);
@@ -123,7 +205,6 @@ abstract class Card {
 abstract class Deployable extends Card {
     isDeployed: boolean = false;
     deployedAt?: number;
-    player?: Player;
     lane?: Lane;
 
     deploy(lane: Lane, at: number): boolean {
@@ -137,15 +218,20 @@ abstract class Deployable extends Card {
             return false;
     }
 }
-class Empty {
 
-}
+
+
 abstract class Castable extends Card {
+
 }
 
 
 class Hero extends Deployable {
-
+    signature: Signature;
+    constructor(name: string, color: string, signature: Signature) {
+        super(name, color);
+        this.signature = signature;
+    }
 }
 
 class Creep extends Deployable {

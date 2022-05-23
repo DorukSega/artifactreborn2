@@ -1,19 +1,22 @@
 "use strict";
 // Base Artifact Class/Module - Abstract
 class Game {
-    constructor(LaneAmount, LaneSize, DeckLimit, TowerHealth, PlayerCount) {
+    constructor(LaneAmount, LaneSize, DeckLimit, TowerHealth, PlayerCount, DeckHeroAmount, DeckCastableAmount, DeckItemAmount) {
         this.spectators = new Array();
         this.LaneAmount = LaneAmount;
         this.LaneSize = LaneSize;
-        this.DeckLimit = DeckLimit;
+        this.HandLimit = DeckLimit;
         this.TowerHealth = TowerHealth;
+        this.DeckHeroAmount = DeckHeroAmount;
+        this.DeckCastableAmount = DeckCastableAmount;
+        this.DeckItemAmount = DeckItemAmount;
         this.players = new Array(PlayerCount);
     }
-    setPlayer(index, name) {
+    setPlayer(index, name, deck) {
         if (this.players[index])
             return false;
         else {
-            this.players[index] = new Player(name, index, this.LaneAmount, this.LaneSize, this.TowerHealth);
+            this.players[index] = new Player(name, index, this, deck);
             return true;
         }
     }
@@ -31,24 +34,82 @@ class User {
 class Spectator extends User {
 }
 class Player extends User {
-    constructor(Name, Id, LaneAmount, LaneSize, TowerHealth) {
+    constructor(Name, Id, game, deck) {
         super(Name, Id);
-        this.lanes = new Array(LaneAmount);
-        for (let i = 0; i < LaneAmount; i++)
-            this.lanes[i] = new Lane(LaneSize, TowerHealth, this);
+        this.game = game;
+        this.lanes = new Array(game.LaneAmount);
+        for (let i = 0; i < game.LaneAmount; i++)
+            this.lanes[i] = new Lane(this);
+        this.deck = new PlayDeck(game, deck).assign(this);
     }
     LaneAmount() {
         return this.lanes.length;
     }
 }
-class Lane {
-    constructor(LaneSize, TowerHealth, player) {
-        this.cards = new Array(LaneSize);
-        this.tower = new Tower(TowerHealth);
+class Deck {
+    constructor(game) {
+        this.game = game;
+        this.heroes = new Array(game.DeckHeroAmount);
+        this.cards = new Array(game.DeckCastableAmount);
+        this.items = new Array(game.DeckItemAmount);
+    }
+    pushCard(card, times = 1) {
+        let indArr = [];
+        for (let i = 0; times; i++)
+            if (!this.cards[i]) {
+                indArr.push(i);
+                times--;
+            }
+        if (!times) { //times == 0
+            let i;
+            while ((i = indArr.pop()) != undefined) {
+                this.cards[i] = card;
+                if (this.player)
+                    card.player = this.player;
+            }
+            return true;
+        }
+        else
+            return false;
+    }
+    pushHero(hero) {
+        for (let i = 0; i < this.heroes.length; i++)
+            if (!this.heroes[i]) {
+                this.heroes[i] = hero;
+                if (this.player)
+                    hero.player = this.player;
+                this.pushCard(hero.signature, 3);
+                return true;
+            }
+        ;
+        return false;
+    }
+    assign(player) {
         this.player = player;
+        return this;
+    }
+}
+class PlayDeck extends Deck {
+    constructor(game, deck) {
+        super(game);
+        this.heroes = deck.heroes.map(e => e); //clone of the array
+        this.cards = deck.cards.map(e => e);
+        this.items = deck.items.map(e => e);
+    }
+}
+class Hand {
+    constructor(DeckLimit) {
+        this.cards = new Array(DeckLimit);
+    }
+}
+class Lane {
+    constructor(player) {
+        this.player = player;
+        this.cards = new Array(player.game.LaneSize);
+        this.tower = new Tower(player.game.TowerHealth);
     }
     deployCard(card, at) {
-        if (this.cards[at] instanceof Deployable)
+        if (this.cards[at])
             return false;
         else {
             this.cards[at] = card;
@@ -63,7 +124,7 @@ class Lane {
         let card = this.cards[at];
         if (card instanceof Deployable) {
             card.isDeployed = false;
-            this.cards[at] = Empty;
+            this.cards[at] = null;
             return true;
         }
         else
@@ -105,11 +166,13 @@ class Deployable extends Card {
             return false;
     }
 }
-class Empty {
-}
 class Castable extends Card {
 }
 class Hero extends Deployable {
+    constructor(name, color, signature) {
+        super(name, color);
+        this.signature = signature;
+    }
 }
 class Creep extends Deployable {
 }
