@@ -64,10 +64,13 @@ abstract class Game {
     }
 }
 
-interface Color {
-    name: string,
-    cssVar: string,
-    creepCssVar?: string
+const enum Color {
+    Red = "RED",
+    Blue = "BLUE",
+    Green = "GREEN",
+    Black = "BLACK",
+    Gold = "GOLD",
+    Gray = "GRAY",
 }
 
 class Deck {
@@ -155,39 +158,4 @@ class Player {
         this.passiveDeck = Deck;
     }
 
-}
-
-const Red: Color = {
-    name: "Red",
-    cssVar: "--cardred",
-    creepCssVar: "--creepred"
-}
-
-const Blue: Color = {
-    name: "Blue",
-    cssVar: "--cardblue",
-    creepCssVar: "--creepblue"
-}
-
-const Green: Color = {
-    name: "Green",
-    cssVar: "--cardgreen",
-    creepCssVar: " --creepgreen"
-}
-
-const Black: Color = {
-    name: "Black",
-    cssVar: "--cardblack",
-    creepCssVar: "--creepblack"
-}
-
-const Gold: Color = {
-    name: "Gold",
-    cssVar: "--cardgold"
-}
-
-const Gray: Color = {
-    name: "Gold",
-    cssVar: "--creepgray",
-    creepCssVar: "--creepgray"
 }
