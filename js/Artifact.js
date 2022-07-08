@@ -1,203 +1,93 @@
 "use strict";
-// Base Artifact Class/Module - Abstract
+const FoundryRules = {
+    Lane: {
+        amount: 3,
+        size: 5
+    },
+    Hand: {
+        limit: 12,
+    },
+    Deck: {
+        heroAmount: 5,
+        castableAmount: 40,
+        itemAmount: 10
+    },
+    Tower: {
+        health: 30
+    },
+    Player: {
+        amount: 2
+    }
+};
+class Entity {
+    constructor(parent) {
+        this.id = Entity.currentId++;
+        this.parent = parent;
+    }
+}
+Entity.currentId = 1;
 class Game {
-    constructor(LaneAmount, LaneSize, DeckLimit, TowerHealth, PlayerCount, DeckHeroAmount, DeckCastableAmount, DeckItemAmount) {
-        this.spectators = new Array();
-        this.LaneAmount = LaneAmount;
-        this.LaneSize = LaneSize;
-        this.HandLimit = DeckLimit;
-        this.TowerHealth = TowerHealth;
-        this.DeckHeroAmount = DeckHeroAmount;
-        this.DeckCastableAmount = DeckCastableAmount;
-        this.DeckItemAmount = DeckItemAmount;
-        this.players = new Array(PlayerCount);
+    static setRuleset(Ruleset) {
+        Game.Ruleset = Ruleset;
     }
-    setPlayer(index, name, deck) {
-        if (this.players[index])
-            return false;
-        else {
-            this.players[index] = new Player(name, index, this, deck);
-            return true;
-        }
-    }
-    addSpectator(name) {
-        this.spectators.push(new Spectator(name, this.spectators.length));
-        return true;
+    static addPlayer(Player) {
+        Game.Players.push(Player);
     }
 }
-class User {
-    constructor(Name, Id) {
-        this.name = Name;
-        this.id = Id;
-    }
-}
-class Spectator extends User {
-}
-class Player extends User {
-    constructor(Name, Id, game, deck) {
-        super(Name, Id);
-        this.game = game;
-        this.lanes = new Array(game.LaneAmount);
-        for (let i = 0; i < game.LaneAmount; i++)
-            this.lanes[i] = new Lane(this);
-        this.deck = new PlayDeck(game, deck).assign(this);
-    }
-    LaneAmount() {
-        return this.lanes.length;
-    }
-}
+Game.Players = new Array();
+Game.Lanes = new Array();
 class Deck {
-    constructor(game) {
-        this.game = game;
-        this.heroes = new Array(game.DeckHeroAmount);
-        this.cards = new Array(game.DeckCastableAmount);
-        this.items = new Array(game.DeckItemAmount);
-    }
-    pushCard(card, times = 1) {
-        let indArr = [];
-        for (let i = 0; times; i++)
-            if (!this.cards[i]) {
-                indArr.push(i);
-                times--;
-            }
-        if (!times) { //times == 0
-            let i;
-            while ((i = indArr.pop()) != undefined) {
-                this.cards[i] = card;
-                if (this.player)
-                    card.player = this.player;
-            }
-            return true;
-        }
-        else
-            return false;
-    }
-    pushHero(hero) {
-        for (let i = 0; i < this.heroes.length; i++)
-            if (!this.heroes[i]) {
-                this.heroes[i] = hero;
-                if (this.player)
-                    hero.player = this.player;
-                this.pushCard(hero.signature, 3);
-                return true;
-            }
-        ;
-        return false;
-    }
-    assign(player) {
-        this.player = player;
-        return this;
-    }
 }
-class PlayDeck extends Deck {
-    constructor(game, deck) {
-        super(game);
-        this.heroes = deck.heroes.map(e => e); //clone of the array
-        this.cards = deck.cards.map(e => e);
-        this.items = deck.items.map(e => e);
-    }
-}
-class Hand {
-    constructor(DeckLimit) {
-        this.cards = new Array(DeckLimit);
-    }
-}
-class Lane {
-    constructor(player) {
-        this.player = player;
-        this.cards = new Array(player.game.LaneSize);
-        this.tower = new Tower(player.game.TowerHealth);
-    }
-    deployCard(card, at) {
-        if (this.cards[at])
-            return false;
-        else {
-            this.cards[at] = card;
-            card.player = this.player;
-            card.lane = this;
-            card.isDeployed = true;
-            card.deployedAt = at;
-            return true;
-        }
-    }
-    removeCard(at) {
-        let card = this.cards[at];
-        if (card instanceof Deployable) {
-            card.isDeployed = false;
-            this.cards[at] = null;
-            return true;
-        }
-        else
-            return false;
-    }
-}
-class Tower {
-    constructor(Health) {
-        this.health = Health;
-    }
-}
-class Color {
-    constructor(Type) {
-        if (Type == "Red" || "Blue" || "Black" || "Green" || "Colourless")
-            this.type = Type;
-        else
-            this.type = "Colourless"; //Default Behaviour
+class Lane extends Entity {
+    constructor() {
+        super(Game);
+        this.sides = new Array(Game.Ruleset.Player.amount);
     }
 }
 class Card {
-    constructor(Name, color) {
-        this.name = Name;
-        this.color = new Color(color);
+    constructor() {
+        this.name = "CardName";
+        this.artID = 0;
+        this.color = "GRAY" /* Gray */;
+        this.attack = 0;
+        this.armour = 0;
+        this.health = 0;
+    }
+    static newInstance(Parent) {
+        return new Active(new this(), Parent);
     }
 }
-class Deployable extends Card {
+class Hero extends Card {
     constructor() {
         super(...arguments);
-        this.isDeployed = false;
-    }
-    deploy(lane, at) {
-        return lane.deployCard(this, at);
-    }
-    remove() {
-        var _a;
-        if (this.lane && this.isDeployed && this.deployedAt)
-            return (_a = this.lane) === null || _a === void 0 ? void 0 : _a.removeCard(this.deployedAt);
-        else
-            return false;
+        this.signature = Card.prototype;
     }
 }
-class Castable extends Card {
-}
-class Hero extends Deployable {
-    constructor(name, color, signature) {
-        super(name, color);
-        this.signature = signature;
+class Active extends Entity {
+    constructor(cardInstance, Parent) {
+        super(Parent);
+        this.color = cardInstance.color;
+        this.name = cardInstance.name;
+        this.artID = cardInstance.artID;
+        this.armour = cardInstance.armour;
+        this.attack = cardInstance.attack;
+        this.health = cardInstance.health;
+    }
+    setParent(Parent) {
+        this.parent = Parent;
     }
 }
-class Creep extends Deployable {
-}
-class Spell extends Castable {
-    constructor(Name, Color, Mana) {
-        super(Name, Color);
-        this.mana = Mana;
+class Player {
+    constructor(Name, Id, Deck) {
+        this.name = Name;
+        this.id = Id;
+        this.passiveDeck = Deck;
     }
 }
-class TowerEnchantment extends Castable {
-    constructor(Name, Color, Mana) {
-        super(Name, Color);
-        this.mana = Mana;
+class Designer {
+    designCard(card) {
+        let CardElement = document.createElement("Card");
+        let CardArt = document.createElement("CardArt");
+        CardArt.style.backgroundImage = `url(card_art/full_art/${card.artID}.png)`;
     }
-}
-class Signature extends Spell {
-}
-class Item extends Card {
-    constructor(Name, Color, Mana, Gold) {
-        super(Name, Color);
-        this.mana = Mana;
-        this.gold = Gold;
-    }
-}
-class Effect {
-}
-class Ability {
 }

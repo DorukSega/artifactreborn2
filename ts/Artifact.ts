@@ -40,21 +40,22 @@ const FoundryRules: Ruleset = { //Artifact 2 Ruleset
     }
 }
 
-abstract class GameObject<Ptype> { //Ptype refers to parent type
-    static #currentId = 1;
+abstract class Entity<Ptype> { //Ptype refers to parent type
+    static currentId = 1;
     id: number;
-    parent?: Ptype;
-    constructor(parent?: Ptype) {
-        this.id = GameObject.#currentId++;
+    parent: Ptype;
+
+    constructor(parent: Ptype) {
+        this.id = Entity.currentId++;
         this.parent = parent;
     }
 }
 
-abstract class Game {
-    static Players: Array<Player> = new Array<Player>;
+class Game {
+    static Players: Array<Player> = new Array<Player>();
     static Ruleset: Ruleset;
 
-    static Lanes: Array<Lane> = new Array<Lane>;
+    static Lanes: Array<Lane> = new Array<Lane>();
 
     static setRuleset(Ruleset: Ruleset) {
         Game.Ruleset = Ruleset;
@@ -79,16 +80,17 @@ class Deck {
 
 type Side = Array<Card>;
 
-class Lane extends GameObject<Game>{
+class Lane extends Entity<Game>{
     sides: Array<Side>;
     constructor() {
-        super(Game);
+        super(Game)
         this.sides = new Array<Side>(Game.Ruleset.Player.amount);
     }
 }
 
 interface CardInterface {
     name: string,
+    artID: number, //location of art
     color: Color,
     armour: number,
     attack: number,
@@ -96,48 +98,43 @@ interface CardInterface {
 }
 
 type CardParent = Lane | Player; //Parent of the Card
+
 type Points = { armour: number, attack: number, health: number };
-abstract class Card implements CardInterface { //TODO: add a ability container
-    name: string;
-    color: Color;
-    readonly armour: number;
-    readonly attack: number;
-    readonly health: number;
 
-    constructor(Name: string, Color: Color, Points: Points | undefined) {
-        this.name = Name;
-        this.color = Color;
+class Card implements CardInterface { //TODO: add a ability container
+    readonly name: string = "CardName";
+    readonly artID: number = 0;
+    readonly color: Color = Color.Gray;
+    readonly attack: number = 0;
+    readonly armour: number = 0;
+    readonly health: number = 0;
 
-        if (Points) {
-            this.armour = Points.armour;
-            this.attack = Points.attack;
-            this.health = Points.health;
-        } else
-            this.armour = this.attack = this.health = 0;
-
+    static newInstance(Parent: CardParent): Active { //gives a new card
+        return new Active(new this(), Parent);
     }
 
-    newInstance(Parent: CardParent): Active { //gives a new card
-        return new Active(this, Parent);
-    }
 }
 
-class Active extends GameObject<CardParent> implements CardInterface {
+abstract class Hero extends Card {
+    readonly signature: Card = Card.prototype;
+}
+
+class Active extends Entity<CardParent> implements CardInterface {
     readonly name: string;
     readonly color: Color;
-
+    readonly artID: number;
     armour: number;
     attack: number;
     health: number;
 
-    constructor(Card: Card, Parent: CardParent) {
+    constructor(cardInstance: Card, Parent: CardParent) {
         super(Parent);
-        this.color = Card.color;
-        this.name = Card.name;
-
-        this.armour = Card.armour;
-        this.attack = Card.attack;
-        this.health = Card.health;
+        this.color = cardInstance.color;
+        this.name = cardInstance.name;
+        this.artID = cardInstance.artID;
+        this.armour = cardInstance.armour;
+        this.attack = cardInstance.attack;
+        this.health = cardInstance.health;
     }
 
     setParent(Parent: CardParent) {
@@ -158,4 +155,13 @@ class Player {
         this.passiveDeck = Deck;
     }
 
+}
+
+class Designer {
+    designCard(card: CardInterface) {
+        let CardElement: HTMLElement = document.createElement("Card");
+        let CardArt: HTMLElement = document.createElement("CardArt");
+        CardArt.style.backgroundImage = `url(card_art/full_art/${card.artID}.png)`;
+
+    }
 }
